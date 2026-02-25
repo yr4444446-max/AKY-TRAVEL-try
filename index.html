@@ -104,175 +104,244 @@
       }
     }
 
-    /* ── ALL CITIES SECTION ── */
+    /* ════════════════════════════════════════
+       ALL CITIES — DRAWER SYSTEM
+       ════════════════════════════════════════ */
+
+    /* ── Compact trigger section (replaces the huge list) ── */
     .all-cities-section {
-      padding: 5rem 0;
+      padding: 4rem 0;
       background: var(--bg-2);
-      position: relative;
+      text-align: center;
     }
 
-    /* ── CLOSE BUTTON ── */
-    .all-cities-close-btn {
-      position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
-      width: 44px;
-      height: 44px;
+    .cities-drawer-trigger-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+      margin-top: 2rem;
+    }
+
+    .btn-open-cities-drawer {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.9rem 2rem;
+      border-radius: 50px;
+      border: 1.5px solid var(--lc-border);
+      background: var(--bg-card);
+      color: var(--text);
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 20px rgba(171,209,198,0.12);
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    .btn-open-cities-drawer:hover {
+      background: var(--uv-mist);
+      border-color: var(--uv);
+      color: var(--uv);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(171,209,198,0.22);
+    }
+
+    .btn-open-cities-drawer .drawer-btn-icon {
+      font-size: 1.3rem;
+    }
+
+    .btn-open-cities-drawer .drawer-btn-count {
+      font-size: 0.75rem;
+      opacity: 0.65;
+      font-weight: 400;
+    }
+
+    .cities-drawer-quick-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      max-width: 560px;
+    }
+
+    .cities-quick-tag {
+      padding: 0.32rem 0.85rem;
+      border-radius: 50px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.18s;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    .cities-quick-tag:hover {
+      border-color: var(--uv);
+      color: var(--uv);
+      background: var(--uv-mist);
+    }
+
+    /* ── DRAWER BACKDROP ── */
+    .cities-drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 10, 8, 0.72);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 1200;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .cities-drawer-backdrop.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* ── DRAWER PANEL ── */
+    .cities-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: min(520px, 92vw);
+      background: var(--bg);
+      border-left: 1px solid var(--border);
+      z-index: 1201;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      box-shadow: -8px 0 48px rgba(0,0,0,0.55);
+    }
+
+    .cities-drawer.open {
+      transform: translateX(0);
+    }
+
+    /* Mobile: drawer slides up from bottom */
+    @media (max-width: 600px) {
+      .cities-drawer {
+        top: auto;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        width: 100%;
+        height: 92dvh;
+        height: 92svh;
+        border-left: none;
+        border-top: 1px solid var(--border);
+        border-radius: 22px 22px 0 0;
+        transform: translateY(100%);
+        box-shadow: 0 -8px 48px rgba(0,0,0,0.55);
+      }
+      .cities-drawer.open {
+        transform: translateY(0);
+      }
+    }
+
+    /* ── DRAWER HEADER ── */
+    .cities-drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      gap: 0.75rem;
+    }
+
+    /* Mobile pull handle */
+    @media (max-width: 600px) {
+      .cities-drawer-header {
+        padding-top: 0.6rem;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.6rem;
+      }
+      .cities-drawer-header::before {
+        content: '';
+        display: block;
+        width: 40px;
+        height: 4px;
+        background: rgba(255,255,255,0.15);
+        border-radius: 2px;
+        margin: 0 auto;
+        flex-shrink: 0;
+      }
+    }
+
+    .cities-drawer-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .cities-drawer-close {
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
-      border: 1.5px solid var(--border);
+      border: 1px solid var(--border);
       background: var(--bg-card);
       color: var(--text-muted);
-      font-size: 1.1rem;
+      font-size: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.2s ease;
-      z-index: 10;
-      font-family: inherit;
-      line-height: 1;
-      -webkit-tap-highlight-color: transparent;
-      touch-action: manipulation;
-    }
-
-    .all-cities-close-btn:hover {
-      background: var(--uv-mist);
-      border-color: var(--uv);
-      color: var(--uv);
-      transform: rotate(90deg) scale(1.1);
-    }
-
-    .all-cities-close-btn:active {
-      transform: rotate(90deg) scale(0.95);
-    }
-
-    /* hidden state */
-    .all-cities-section.cities-hidden {
-      display: none !important;
-    }
-
-    /* Re-open button that appears in nav or footer area */
-    .all-cities-reopen-bar {
-      display: none;
-      text-align: center;
-      padding: 1.5rem;
-      background: var(--bg-2);
-    }
-
-    .all-cities-reopen-bar.visible {
-      display: block;
-    }
-
-    .btn-reopen-cities {
-      padding: 0.55rem 1.4rem;
-      border-radius: 50px;
-      border: 1.5px solid var(--border);
-      background: var(--bg-card);
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      cursor: pointer;
+      flex-shrink: 0;
       font-family: inherit;
       transition: all 0.2s;
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
+      align-self: flex-start;
     }
 
-    .btn-reopen-cities:hover {
+    @media (max-width: 600px) {
+      .cities-drawer-close {
+        position: absolute;
+        top: 0.75rem;
+        right: 1rem;
+      }
+    }
+
+    .cities-drawer-close:hover {
+      background: var(--uv-mist);
       border-color: var(--uv);
       color: var(--uv);
-      background: var(--uv-mist);
+      transform: rotate(90deg);
     }
 
-    @media (max-width: 768px) {
-      .all-cities-close-btn {
-        top: 1rem;
-        right: 1rem;
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-      }
-
-      /* iOS: fix search input tap zoom */
-      .cities-search-input {
-        font-size: 16px !important;
-      }
-
-      /* iOS: fix city card tap */
-      .city-list-card {
-        -webkit-tap-highlight-color: transparent;
-        touch-action: manipulation;
-        -webkit-user-select: none;
-        user-select: none;
-      }
-
-      .city-list-card:active {
-        transform: scale(0.97);
-        background: var(--uv-mist);
-        border-color: var(--uv);
-      }
-
-      /* iOS: region tab tap */
-      .city-region-tab {
-        -webkit-tap-highlight-color: transparent;
-        touch-action: manipulation;
-        min-height: 40px;
-        display: flex;
-        align-items: center;
-      }
-
-      /* Cities grid: single column list on mobile */
-      .cities-master-grid {
-        grid-template-columns: 1fr !important;
-        padding: 0 1rem !important;
-        gap: 0.6rem !important;
-      }
-
-      .city-list-card {
-        padding: 0.85rem 1rem;
-      }
-
-      .cities-search-wrap {
-        padding: 0 1rem;
-        margin-bottom: 1.25rem;
-      }
-
-      .cities-region-tabs {
-        padding: 0 1rem;
-        justify-content: flex-start;
-        overflow-x: auto;
-        flex-wrap: nowrap;
-        scrollbar-width: none;
-        -webkit-overflow-scrolling: touch;
-        padding-bottom: 0.25rem;
-      }
-
-      .cities-region-tabs::-webkit-scrollbar {
-        display: none;
-      }
-
-      .city-region-tab {
-        flex-shrink: 0;
-      }
-    }
-    
-
+    /* ── SEARCH inside drawer ── */
     .cities-search-wrap {
-      max-width: 520px;
-      margin: 0 auto 2rem;
+      padding: 0.85rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
       position: relative;
     }
 
     .cities-search-input {
       width: 100%;
       box-sizing: border-box;
-      padding: 0.85rem 1rem 0.85rem 2.8rem;
+      padding: 0.75rem 1rem 0.75rem 2.6rem;
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 50px;
       color: var(--text);
-      font-size: 0.95rem;
+      font-size: 16px;
       outline: none;
       transition: border-color 0.2s;
+      font-family: inherit;
     }
 
     .cities-search-input:focus {
@@ -281,31 +350,44 @@
 
     .cities-search-icon {
       position: absolute;
-      left: 1rem;
+      left: 2.1rem;
       top: 50%;
       transform: translateY(-50%);
       color: var(--text-dim);
       pointer-events: none;
     }
 
+    /* ── REGION TABS inside drawer ── */
     .cities-region-tabs {
       display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      justify-content: center;
-      margin-bottom: 2rem;
+      gap: 0.4rem;
+      padding: 0.75rem 1.25rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--border);
     }
 
+    .cities-region-tabs::-webkit-scrollbar { display: none; }
+
     .city-region-tab {
-      padding: 0.4rem 1rem;
+      flex-shrink: 0;
+      padding: 0.35rem 0.9rem;
       border-radius: 50px;
       border: 1px solid var(--border);
       background: transparent;
       color: var(--text-muted);
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.18s;
       font-family: inherit;
+      white-space: nowrap;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      min-height: 34px;
+      display: flex;
+      align-items: center;
     }
 
     .city-region-tab.active,
@@ -315,67 +397,82 @@
       color: var(--uv);
     }
 
+    /* ── COUNT BADGE ── */
+    .cities-count-badge {
+      padding: 0.5rem 1.25rem;
+      color: var(--text-dim);
+      font-size: 0.8rem;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cities-count-badge strong { color: var(--uv); }
+
+    /* ── SCROLLABLE CITY GRID ── */
+    .cities-drawer-body {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 0.85rem 1.25rem 2rem;
+    }
+
     .cities-master-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 0.75rem;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.55rem;
+    }
+
+    @media (min-width: 400px) {
+      .cities-master-grid {
+        grid-template-columns: 1fr 1fr;
+      }
     }
 
     .city-list-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 0.9rem 1rem;
+      border-radius: 12px;
+      padding: 0.7rem 0.85rem;
       display: flex;
       align-items: center;
-      gap: 0.65rem;
+      gap: 0.55rem;
       cursor: pointer;
-      transition: all 0.22s;
-      text-decoration: none;
+      transition: all 0.18s;
       color: var(--text);
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      -webkit-user-select: none;
+      user-select: none;
     }
 
-    .city-list-card:hover {
+    .city-list-card:hover,
+    .city-list-card:active {
       border-color: var(--uv);
       background: var(--uv-mist);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      transform: translateY(-1px);
     }
 
     .city-list-emoji {
-      font-size: 1.4rem;
+      font-size: 1.25rem;
       flex-shrink: 0;
     }
 
-    .city-list-info {
-      min-width: 0;
-    }
+    .city-list-info { min-width: 0; }
 
     .city-list-name {
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.82rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     .city-list-state {
-      font-size: 0.73rem;
+      font-size: 0.68rem;
       color: var(--text-dim);
-    }
-
-    .cities-count-badge {
-      text-align: center;
-      margin-bottom: 1.5rem;
-      color: var(--text-dim);
-      font-size: 0.85rem;
-    }
-
-    .cities-count-badge strong {
-      color: var(--uv);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     #noResultsMsg {
@@ -383,6 +480,7 @@
       padding: 2rem;
       color: var(--text-dim);
       display: none;
+      grid-column: 1 / -1;
     }
   </style>
   <link rel="stylesheet" href="style.css" />
@@ -1478,33 +1576,60 @@
     </section>
 
     <!-- ═══ ALL CITIES OF INDIA ═══ -->
+    <!-- ═══ ALL CITIES — DRAWER TRIGGER ═══ -->
     <section id="all-cities" class="section all-cities-section">
-      <!-- Close Button -->
-      <button class="all-cities-close-btn" onclick="toggleAllCities(false)" aria-label="Close All Cities section" title="Close">
-        ✕
-      </button>
-
       <div class="section-header-wrap">
         <div class="section-label-tag">Explore All</div>
         <h2 class="section-title-main">All Cities<br><em>of India</em></h2>
-        <p class="section-sub-text">Discover 100+ destinations across every state — click any city to plan your trip.
-        </p>
+        <p class="section-sub-text">Discover 100+ destinations across every state — click any city to plan your trip.</p>
+      </div>
+
+      <div class="cities-drawer-trigger-wrap">
+        <!-- Main open button -->
+        <button class="btn-open-cities-drawer" onclick="openCitiesDrawer()">
+          <span class="drawer-btn-icon">🏙️</span>
+          Browse All Cities
+          <span class="drawer-btn-count">124+ destinations</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.6"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+
+        <!-- Quick region shortcuts -->
+        <div class="cities-drawer-quick-tags">
+          <button class="cities-quick-tag" onclick="openCitiesDrawer('North')">🏔️ North</button>
+          <button class="cities-quick-tag" onclick="openCitiesDrawer('South')">🌴 South</button>
+          <button class="cities-quick-tag" onclick="openCitiesDrawer('West')">🏜️ West</button>
+          <button class="cities-quick-tag" onclick="openCitiesDrawer('East')">🌊 East</button>
+          <button class="cities-quick-tag" onclick="openCitiesDrawer('Northeast')">🌿 Northeast</button>
+          <button class="cities-quick-tag" onclick="openCitiesDrawer('Central')">🐆 Central</button>
+          <button class="cities-quick-tag" onclick="openCitiesDrawer('Islands')">🐢 Islands</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ ALL CITIES DRAWER ═══ -->
+    <div class="cities-drawer-backdrop" id="citiesDrawerBackdrop" onclick="closeCitiesDrawer()"></div>
+    <div class="cities-drawer" id="citiesDrawer" role="dialog" aria-modal="true" aria-label="All Cities of India">
+
+      <!-- Header -->
+      <div class="cities-drawer-header">
+        <div class="cities-drawer-title">🏙️ All Cities of India</div>
+        <button class="cities-drawer-close" onclick="closeCitiesDrawer()" aria-label="Close">✕</button>
       </div>
 
       <!-- Search -->
       <div class="cities-search-wrap">
         <span class="cities-search-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.35-4.35" />
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
           </svg>
         </span>
         <input type="text" class="cities-search-input" id="citySearchInput"
-          placeholder="Search any city, state or region..." oninput="filterCities(this.value)" />
+          placeholder="Search city, state or region…"
+          oninput="filterCities(this.value)"
+          autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
       </div>
 
-      <!-- Region filter tabs -->
+      <!-- Region tabs -->
       <div class="cities-region-tabs" id="cityRegionTabs">
         <button class="city-region-tab active" onclick="filterCitiesByRegion('All',this)">🇮🇳 All</button>
         <button class="city-region-tab" onclick="filterCitiesByRegion('North',this)">🏔️ North</button>
@@ -1516,18 +1641,18 @@
         <button class="city-region-tab" onclick="filterCitiesByRegion('Islands',this)">🐢 Islands</button>
       </div>
 
-      <div class="cities-count-badge" id="citiesCountBadge"><strong id="citiesCountNum">100+</strong> destinations found
+      <!-- Count -->
+      <div class="cities-count-badge" id="citiesCountBadge">
+        <strong id="citiesCountNum">124</strong> destinations found
       </div>
 
-      <div class="cities-master-grid" id="citiesMasterGrid">
-        <!-- Populated by JS -->
+      <!-- Scrollable city grid -->
+      <div class="cities-drawer-body">
+        <div class="cities-master-grid" id="citiesMasterGrid">
+          <!-- Populated by JS -->
+        </div>
+        <div id="noResultsMsg">No cities found. Try a different search.</div>
       </div>
-      <div id="noResultsMsg">No cities found. Try a different search.</div>
-    </section>
-
-    <!-- Re-open bar (shown when All Cities is closed) -->
-    <div class="all-cities-reopen-bar" id="allCitiesReopenBar">
-      <button class="btn-reopen-cities" onclick="toggleAllCities(true)">🏙️ Show All Cities of India</button>
     </div>
 
     <!-- AI FEATURES -->
@@ -2138,28 +2263,64 @@
 
   <script src="script.js"></script>
 
-  <!-- ═══ MOBILE FIX — inline ═══ -->
+  <!-- ═══ CITIES DRAWER + MOBILE FIX ═══ -->
   <script>
-    /* ── All Cities toggle (close / reopen) ── */
-    window.toggleAllCities = function (show) {
-      var section = document.getElementById('all-cities');
-      var reopen  = document.getElementById('allCitiesReopenBar');
-      if (!section) return;
-      if (show) {
-        section.classList.remove('cities-hidden');
-        if (reopen) reopen.classList.remove('visible');
-        /* Smooth scroll to section */
-        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    /* ── Cities Drawer ─────────────────────────────────────── */
+    window.openCitiesDrawer = function (region) {
+      var drawer   = document.getElementById('citiesDrawer');
+      var backdrop = document.getElementById('citiesDrawerBackdrop');
+      if (!drawer) return;
+
+      drawer.classList.add('open');
+      backdrop.classList.add('open');
+      document.body.style.overflow = 'hidden';
+
+      /* If a region shortcut was clicked, activate that tab */
+      if (region) {
+        var tabs = document.querySelectorAll('.city-region-tab');
+        tabs.forEach(function (t) {
+          var matches = t.textContent.trim().toLowerCase().indexOf(region.toLowerCase()) !== -1;
+          t.classList.toggle('active', matches);
+          if (matches) {
+            window.filterCitiesByRegion(region, t);
+          }
+        });
       } else {
-        section.classList.add('cities-hidden');
-        if (reopen) reopen.classList.add('visible');
-        /* Scroll past the section so page doesn't jump */
-        var nextEl = section.nextElementSibling;
-        if (nextEl && nextEl.id === 'allCitiesReopenBar') nextEl = nextEl.nextElementSibling;
-        if (nextEl) nextEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        /* Reset to All */
+        var allTab = document.querySelector('.city-region-tab');
+        if (allTab && !document.querySelector('.city-region-tab.active')) {
+          allTab.classList.add('active');
+          window.filterCitiesByRegion('All', allTab);
+        }
+      }
+
+      /* Auto-focus search on desktop */
+      if (window.innerWidth > 600) {
+        setTimeout(function () {
+          var inp = document.getElementById('citySearchInput');
+          if (inp) inp.focus();
+        }, 350);
       }
     };
 
+    window.closeCitiesDrawer = function () {
+      var drawer   = document.getElementById('citiesDrawer');
+      var backdrop = document.getElementById('citiesDrawerBackdrop');
+      if (!drawer) return;
+      drawer.classList.remove('open');
+      backdrop.classList.remove('open');
+      document.body.style.overflow = '';
+      /* Clear search */
+      var inp = document.getElementById('citySearchInput');
+      if (inp) { inp.value = ''; window.filterCities(''); }
+    };
+
+    /* ESC closes drawer */
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') window.closeCitiesDrawer();
+    });
+
+    /* ── Mobile / iOS Fixes ─────────────────────────────────── */
     (function () {
       'use strict';
       function init() {
@@ -2171,6 +2332,8 @@
           var imgEl = document.getElementById('cityHeroImg');
           if (imgEl) { imgEl.src = imgData.src; imgEl.alt = imgData.alt; imgEl.style.display = imgData.src ? 'block' : 'none'; }
           document.body.classList.add('city-page-open');
+          /* Also close cities drawer if open */
+          window.closeCitiesDrawer();
         };
         /* 2. Wrap closeCityPage */
         var _origClose = window.closeCityPage;
@@ -2179,29 +2342,34 @@
           document.body.classList.remove('city-page-open');
           document.body.style.overflow = '';
         };
-        /* 3. Fix place cards — full area tappable */
+        /* 3. Fix place cards */
         document.querySelectorAll('.place-card').forEach(function (card) {
           card.querySelectorAll('*').forEach(function (child) { child.style.pointerEvents = 'none'; });
           card.style.pointerEvents = 'auto';
         });
-        /* 4. iOS: fix city-list-card tap — delegate on grid */
-        var grid = document.getElementById('citiesMasterGrid');
-        if (grid) {
-          grid.addEventListener('click', function (e) {
-            var card = e.target.closest('.city-list-card');
-            if (card) card.dispatchEvent(new MouseEvent('click', { bubbles: false }));
-          }, { passive: true });
-        }
-        /* 5. iOS: prevent double-tap zoom on region tabs */
+        /* 4. iOS: region tabs no double-tap delay */
         document.querySelectorAll('.city-region-tab').forEach(function (btn) {
           btn.addEventListener('touchend', function (e) {
             e.preventDefault();
             btn.click();
           }, { passive: false });
         });
-        /* 6. Android back closes city page */
+        /* 5. iOS: city cards tap fix via delegation */
+        var grid = document.getElementById('citiesMasterGrid');
+        if (grid) {
+          grid.addEventListener('touchend', function (e) {
+            var card = e.target.closest('.city-list-card');
+            if (card) { e.preventDefault(); card.click(); }
+          }, { passive: false });
+        }
+        /* 6. Android back closes drawer then city page */
         window.addEventListener('popstate', function () {
-          if (document.body.classList.contains('city-page-open')) window.closeCityPage();
+          var drawer = document.getElementById('citiesDrawer');
+          if (drawer && drawer.classList.contains('open')) {
+            window.closeCitiesDrawer();
+          } else if (document.body.classList.contains('city-page-open')) {
+            window.closeCityPage();
+          }
         });
       }
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
