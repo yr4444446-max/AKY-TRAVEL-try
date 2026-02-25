@@ -108,7 +108,153 @@
     .all-cities-section {
       padding: 5rem 0;
       background: var(--bg-2);
+      position: relative;
     }
+
+    /* ── CLOSE BUTTON ── */
+    .all-cities-close-btn {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      z-index: 10;
+      font-family: inherit;
+      line-height: 1;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    .all-cities-close-btn:hover {
+      background: var(--uv-mist);
+      border-color: var(--uv);
+      color: var(--uv);
+      transform: rotate(90deg) scale(1.1);
+    }
+
+    .all-cities-close-btn:active {
+      transform: rotate(90deg) scale(0.95);
+    }
+
+    /* hidden state */
+    .all-cities-section.cities-hidden {
+      display: none !important;
+    }
+
+    /* Re-open button that appears in nav or footer area */
+    .all-cities-reopen-bar {
+      display: none;
+      text-align: center;
+      padding: 1.5rem;
+      background: var(--bg-2);
+    }
+
+    .all-cities-reopen-bar.visible {
+      display: block;
+    }
+
+    .btn-reopen-cities {
+      padding: 0.55rem 1.4rem;
+      border-radius: 50px;
+      border: 1.5px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    .btn-reopen-cities:hover {
+      border-color: var(--uv);
+      color: var(--uv);
+      background: var(--uv-mist);
+    }
+
+    @media (max-width: 768px) {
+      .all-cities-close-btn {
+        top: 1rem;
+        right: 1rem;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+
+      /* iOS: fix search input tap zoom */
+      .cities-search-input {
+        font-size: 16px !important;
+      }
+
+      /* iOS: fix city card tap */
+      .city-list-card {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+
+      .city-list-card:active {
+        transform: scale(0.97);
+        background: var(--uv-mist);
+        border-color: var(--uv);
+      }
+
+      /* iOS: region tab tap */
+      .city-region-tab {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+      }
+
+      /* Cities grid: single column list on mobile */
+      .cities-master-grid {
+        grid-template-columns: 1fr !important;
+        padding: 0 1rem !important;
+        gap: 0.6rem !important;
+      }
+
+      .city-list-card {
+        padding: 0.85rem 1rem;
+      }
+
+      .cities-search-wrap {
+        padding: 0 1rem;
+        margin-bottom: 1.25rem;
+      }
+
+      .cities-region-tabs {
+        padding: 0 1rem;
+        justify-content: flex-start;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 0.25rem;
+      }
+
+      .cities-region-tabs::-webkit-scrollbar {
+        display: none;
+      }
+
+      .city-region-tab {
+        flex-shrink: 0;
+      }
+    }
+    
 
     .cities-search-wrap {
       max-width: 520px;
@@ -1333,6 +1479,11 @@
 
     <!-- ═══ ALL CITIES OF INDIA ═══ -->
     <section id="all-cities" class="section all-cities-section">
+      <!-- Close Button -->
+      <button class="all-cities-close-btn" onclick="toggleAllCities(false)" aria-label="Close All Cities section" title="Close">
+        ✕
+      </button>
+
       <div class="section-header-wrap">
         <div class="section-label-tag">Explore All</div>
         <h2 class="section-title-main">All Cities<br><em>of India</em></h2>
@@ -1373,6 +1524,11 @@
       </div>
       <div id="noResultsMsg">No cities found. Try a different search.</div>
     </section>
+
+    <!-- Re-open bar (shown when All Cities is closed) -->
+    <div class="all-cities-reopen-bar" id="allCitiesReopenBar">
+      <button class="btn-reopen-cities" onclick="toggleAllCities(true)">🏙️ Show All Cities of India</button>
+    </div>
 
     <!-- AI FEATURES -->
     <section class="section features-section">
@@ -1984,6 +2140,26 @@
 
   <!-- ═══ MOBILE FIX — inline ═══ -->
   <script>
+    /* ── All Cities toggle (close / reopen) ── */
+    window.toggleAllCities = function (show) {
+      var section = document.getElementById('all-cities');
+      var reopen  = document.getElementById('allCitiesReopenBar');
+      if (!section) return;
+      if (show) {
+        section.classList.remove('cities-hidden');
+        if (reopen) reopen.classList.remove('visible');
+        /* Smooth scroll to section */
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        section.classList.add('cities-hidden');
+        if (reopen) reopen.classList.add('visible');
+        /* Scroll past the section so page doesn't jump */
+        var nextEl = section.nextElementSibling;
+        if (nextEl && nextEl.id === 'allCitiesReopenBar') nextEl = nextEl.nextElementSibling;
+        if (nextEl) nextEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+
     (function () {
       'use strict';
       function init() {
@@ -2008,7 +2184,22 @@
           card.querySelectorAll('*').forEach(function (child) { child.style.pointerEvents = 'none'; });
           card.style.pointerEvents = 'auto';
         });
-        /* 4. Android back closes city page */
+        /* 4. iOS: fix city-list-card tap — delegate on grid */
+        var grid = document.getElementById('citiesMasterGrid');
+        if (grid) {
+          grid.addEventListener('click', function (e) {
+            var card = e.target.closest('.city-list-card');
+            if (card) card.dispatchEvent(new MouseEvent('click', { bubbles: false }));
+          }, { passive: true });
+        }
+        /* 5. iOS: prevent double-tap zoom on region tabs */
+        document.querySelectorAll('.city-region-tab').forEach(function (btn) {
+          btn.addEventListener('touchend', function (e) {
+            e.preventDefault();
+            btn.click();
+          }, { passive: false });
+        });
+        /* 6. Android back closes city page */
         window.addEventListener('popstate', function () {
           if (document.body.classList.contains('city-page-open')) window.closeCityPage();
         });
